@@ -48,7 +48,7 @@ def getService():
         print("Could not find credentials.json!  You need to generate this yourself from the google api developer page")
         exit()
 
-    picklePath = os.path.join(scriptDir, 'token.pickle')
+    tokensPickle = os.path.join(scriptDir, 'token.pickle')
     creds = None
     # The file token.pickle stores the user's access and refresh tokens, and is
     # created automatically when the authorization flow completes for the first
@@ -62,10 +62,10 @@ def getService():
             creds.refresh(Request())
         else:
             flow = InstalledAppFlow.from_client_secrets_file(
-                'credentials.json', SCOPES)
+                credentialsPath, SCOPES)
             creds = flow.run_local_server()
         # Save the credentials for the next run
-        with open('token.pickle', 'wb') as token:
+        with open(tokensPickle, 'wb') as token:
             pickle.dump(creds, token)
 
     return build('calendar', 'v3', credentials=creds)
